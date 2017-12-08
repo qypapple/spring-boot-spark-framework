@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import scala.Tuple2;
@@ -27,11 +27,12 @@ public class WorldCountService implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private  static final Pattern SPACE = Pattern.compile(" ");
+
+	@Autowired
+	private transient JavaSparkContext sc;
 	
 	public Map<String, Integer> run(){
-		SparkConf conf = new SparkConf().setAppName("vector's first spark app");
-        JavaSparkContext sc = new JavaSparkContext(conf);
-        
+
 		Map<String,Integer> result = new HashMap<String,Integer>();
 		JavaRDD<String> lines = sc.textFile("/Users/yuqing/Downloads/blsmy.txt").cache();
 		
